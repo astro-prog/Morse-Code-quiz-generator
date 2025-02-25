@@ -1,0 +1,254 @@
+import javax.swing.*;
+import java.awt.*;
+import java.util.*;
+import java.util.List;
+
+public class MorseCodeApp {
+    private static final Map<String, String> MORSE_CODE_DICT = new LinkedHashMap<>();
+    private static final List<String> ADVANCED_QUESTIONS = new ArrayList<>();
+    private static int score = 0;
+    private static String currentMorseCode;
+    private static String correctAnswer;
+
+    public static void main(String[] args) {
+        initializeMorseCodeDict();
+        initializeAdvancedQuestions();
+
+        JFrame mainFrame = new JFrame("Morse Code App");
+        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        mainFrame.setSize(400, 300);
+        mainFrame.setLayout(new GridLayout(3, 1, 10, 10));
+
+        JLabel welcomeLabel = new JLabel("Welcome to the Morse Code App", SwingConstants.CENTER);
+        welcomeLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        mainFrame.add(welcomeLabel);
+
+        JButton learnButton = new JButton("Learn Morse Code");
+        learnButton.setFont(new Font("Arial", Font.PLAIN, 18));
+        learnButton.addActionListener(e -> showMorseCodeTable());
+        mainFrame.add(learnButton);
+
+        JButton quizButton = new JButton("Test Your Skills");
+        quizButton.setFont(new Font("Arial", Font.PLAIN, 18));
+        quizButton.addActionListener(e -> chooseDifficulty());
+        mainFrame.add(quizButton);
+
+        mainFrame.setVisible(true);
+    }
+
+    private static void initializeMorseCodeDict() {
+        MORSE_CODE_DICT.put("A", ".-");
+        MORSE_CODE_DICT.put("B", "-...");
+        MORSE_CODE_DICT.put("C", "-.-.");
+        MORSE_CODE_DICT.put("D", "-..");
+        MORSE_CODE_DICT.put("E", ".");
+        MORSE_CODE_DICT.put("F", "..-.");
+        MORSE_CODE_DICT.put("G", "--.");
+        MORSE_CODE_DICT.put("H", "....");
+        MORSE_CODE_DICT.put("I", "..");
+        MORSE_CODE_DICT.put("J", ".---");
+        MORSE_CODE_DICT.put("K", "-.-");
+        MORSE_CODE_DICT.put("L", ".-..");
+        MORSE_CODE_DICT.put("M", "--");
+        MORSE_CODE_DICT.put("N", "-.");
+        MORSE_CODE_DICT.put("O", "---");
+        MORSE_CODE_DICT.put("P", ".--.");
+        MORSE_CODE_DICT.put("Q", "--.-");
+        MORSE_CODE_DICT.put("R", ".-.");
+        MORSE_CODE_DICT.put("S", "...");
+        MORSE_CODE_DICT.put("T", "-");
+        MORSE_CODE_DICT.put("U", "..-");
+        MORSE_CODE_DICT.put("V", "...-");
+        MORSE_CODE_DICT.put("W", ".--");
+        MORSE_CODE_DICT.put("X", "-..-");
+        MORSE_CODE_DICT.put("Y", "-.--");
+        MORSE_CODE_DICT.put("Z", "--..");
+    }
+
+    private static void initializeAdvancedQuestions() {
+        Collections.addAll(ADVANCED_QUESTIONS,
+                "It is such a beautiful day",
+                "The world is full of opportunities",
+                "Keep learning and growing",
+                "Success is built on perseverance",
+                "Challenges make you stronger",
+                "Never give up on your dreams",
+                "Hard work always pays off",
+                "Believe in yourself",
+                "Good habits lead to success",
+                "Consistency is the key to achievement",
+                "Communication is the bridge to understanding",
+                "Technology connects the world",
+                "Knowledge is power",
+                "Strive for excellence every day",
+                "Learn from your mistakes",
+                "Make every day count",
+                "Gratitude brings happiness",
+                "Teamwork makes the dream work",
+                "Discipline leads to freedom",
+                "Inspiration is all around you");
+    }
+
+    private static void showMorseCodeTable() {
+        JFrame tableFrame = new JFrame("Morse Code Table");
+        tableFrame.setSize(400, 500);
+        tableFrame.setLayout(new BorderLayout());
+
+        JTextArea textArea = new JTextArea();
+        textArea.setEditable(false);
+        textArea.setFont(new Font("Monospaced", Font.PLAIN, 14));
+
+        StringBuilder tableText = new StringBuilder("English to Morse Code Reference Table:\n\n");
+        for (Map.Entry<String, String> entry : MORSE_CODE_DICT.entrySet()) {
+            tableText.append(entry.getKey()).append(" : ").append(entry.getValue()).append("\n");
+        }
+        textArea.setText(tableText.toString());
+
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        tableFrame.add(scrollPane, BorderLayout.CENTER);
+
+        tableFrame.setVisible(true);
+    }
+
+    private static void chooseDifficulty() {
+        JFrame difficultyFrame = new JFrame("Choose Difficulty");
+        difficultyFrame.setSize(300, 200);
+        difficultyFrame.setLayout(new GridLayout(3, 1, 10, 10));
+
+        JLabel label = new JLabel("Select Difficulty Level", SwingConstants.CENTER);
+        label.setFont(new Font("Arial", Font.BOLD, 16));
+        difficultyFrame.add(label);
+
+        JButton beginnerButton = new JButton("Beginner");
+        beginnerButton.setFont(new Font("Arial", Font.PLAIN, 14));
+        beginnerButton.addActionListener(e -> {
+            difficultyFrame.dispose();
+            startQuiz("Beginner");
+        });
+        difficultyFrame.add(beginnerButton);
+
+        JButton advancedButton = new JButton("Advanced");
+        advancedButton.setFont(new Font("Arial", Font.PLAIN, 14));
+        advancedButton.addActionListener(e -> {
+            difficultyFrame.dispose();
+            startQuiz("Advanced");
+        });
+        difficultyFrame.add(advancedButton);
+
+        difficultyFrame.setVisible(true);
+    }
+
+    private static void startQuiz(String difficulty) {
+        JFrame quizFrame = new JFrame("Morse Code Quiz - " + difficulty + " Level");
+        quizFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        quizFrame.setSize(500, 400);
+
+        JPanel quizPanel = new JPanel();
+        quizPanel.setLayout(new GridLayout(7, 1, 10, 10));
+        quizFrame.add(quizPanel);
+
+        JLabel questionLabel = new JLabel("Translate this Morse code: ", SwingConstants.CENTER);
+        questionLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        quizPanel.add(questionLabel);
+
+        JLabel morseCodeLabel = new JLabel("", SwingConstants.CENTER);
+        morseCodeLabel.setFont(new Font("Arial", Font.PLAIN, 20));
+        quizPanel.add(morseCodeLabel);
+
+        JButton[] optionButtons = new JButton[4];
+        for (int i = 0; i < 4; i++) {
+            optionButtons[i] = new JButton();
+            optionButtons[i].setFont(new Font("Arial", Font.PLAIN, 16));
+            quizPanel.add(optionButtons[i]);
+        }
+
+        JLabel scoreLabel = new JLabel("Score: 0", SwingConstants.CENTER);
+        scoreLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        quizPanel.add(scoreLabel);
+
+        JButton referenceButton = new JButton("Morse Code Table");
+        referenceButton.setFont(new Font("Arial", Font.PLAIN, 16));
+        referenceButton.addActionListener(e -> showMorseCodeTable());
+        quizPanel.add(referenceButton);
+
+        JButton exitButton = new JButton("Exit Quiz");
+        exitButton.setFont(new Font("Arial", Font.PLAIN, 16));
+        exitButton.addActionListener(e -> {
+            JOptionPane.showMessageDialog(quizFrame, "Thank you for playing!\nYour final score is: " + score, "Final Score", JOptionPane.INFORMATION_MESSAGE);
+            quizFrame.dispose();
+        });
+        quizPanel.add(exitButton);
+
+        generateQuestion(difficulty, morseCodeLabel, optionButtons);
+
+        for (JButton button : optionButtons) {
+            button.addActionListener(e -> {
+                String selectedAnswer = button.getText();
+                if (selectedAnswer.equals(correctAnswer)) {
+                    score++;
+                    JOptionPane.showMessageDialog(quizFrame, "Correct!", "Result", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(quizFrame, "Incorrect! The correct answer was: " + correctAnswer,
+                            "Result", JOptionPane.ERROR_MESSAGE);
+                }
+                scoreLabel.setText("Score: " + score);
+                generateQuestion(difficulty, morseCodeLabel, optionButtons);
+            });
+        }
+
+        quizFrame.setVisible(true);
+    }
+
+    private static void generateQuestion(String difficulty, JLabel morseCodeLabel, JButton[] optionButtons) {
+        if ("Beginner".equals(difficulty)) {
+            List<Map.Entry<String, String>> entries = new ArrayList<>(MORSE_CODE_DICT.entrySet());
+            Collections.shuffle(entries);
+            Map.Entry<String, String> selectedEntry = entries.get(0);
+
+            currentMorseCode = selectedEntry.getValue();
+            correctAnswer = selectedEntry.getKey();
+        } else {
+            Random random = new Random();
+            String phrase = ADVANCED_QUESTIONS.get(random.nextInt(ADVANCED_QUESTIONS.size()));
+            currentMorseCode = phraseToMorse(phrase);
+            correctAnswer = phrase;
+        }
+
+        morseCodeLabel.setText(currentMorseCode);
+
+        List<String> options = new ArrayList<>();
+        options.add(correctAnswer);
+        while (options.size() < 4) {
+            String randomAnswer = generateRandomOption(difficulty);
+            if (!options.contains(randomAnswer)) {
+                options.add(randomAnswer);
+            }
+        }
+        Collections.shuffle(options);
+
+        for (int i = 0; i < 4; i++) {
+            optionButtons[i].setText(options.get(i));
+        }
+    }
+
+    private static String generateRandomOption(String difficulty) {
+        if ("Beginner".equals(difficulty)) {
+            return new ArrayList<>(MORSE_CODE_DICT.keySet()).get(new Random().nextInt(MORSE_CODE_DICT.size()));
+        } else {
+            return ADVANCED_QUESTIONS.get(new Random().nextInt(ADVANCED_QUESTIONS.size()));
+        }
+    }
+
+    private static String phraseToMorse(String phrase) {
+        StringBuilder morse = new StringBuilder();
+        for (char c : phrase.toUpperCase().toCharArray()) {
+            if (MORSE_CODE_DICT.containsKey(String.valueOf(c))) {
+                morse.append(MORSE_CODE_DICT.get(String.valueOf(c))).append(" ");
+            } else if (c == ' ') {
+                morse.append(" / ");
+            }
+        }
+        return morse.toString().trim();
+    }
+}
+

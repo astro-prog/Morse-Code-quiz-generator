@@ -68,6 +68,4 @@ Morse-Code-quiz-generator/
 
 Contributions are welcome! If you have suggestions for improvements or additional features (e.g., sound playback, difficulty levels), feel free to fork the repo and submit a pull request.
 
-📄 License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more information.
+made with &hearts; by astro

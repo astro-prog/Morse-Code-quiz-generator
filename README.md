@@ -68,4 +68,4 @@ Morse-Code-quiz-generator/
 
 Contributions are welcome! If you have suggestions for improvements or additional features (e.g., sound playback, difficulty levels), feel free to fork the repo and submit a pull request.
 
-Made with &hearts; by astro
+Made with &hearts; by @astro-prog
